@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Imagem de DIV</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+        
+        body {
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        #divToCapture {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    Texto superior: <input type="text" id="upperText" oninput="updateDiv()" /><br/>
+    Texto inferior: <input type="text" id="lowerText" oninput="updateDiv()" /><br/>
+    Cor do fundo: <input type="color" id="bgColor" oninput="updateDiv()" /><br/>
+    <button onclick="generateImage()">Go</button>
+
+    <div id="divToCapture" style="margin-top: 50px;">
+        <div id="upperDiv"></div>
+        <div id="lowerDiv"></div>
+    </div>
+
+    <img id="resultImage" style="margin-top: 50px;"/>
+    <a id="downloadLink" style="display: none;">Download da imagem</a>
+
+    <script>
+        function updateDiv() {
+            var upperText = document.getElementById('upperText').value;
+            var lowerText = document.getElementById('lowerText').value;
+            var bgColor = document.getElementById('bgColor').value;
+
+            document.getElementById('upperDiv').innerText = upperText;
+            document.getElementById('lowerDiv').innerText = lowerText;
+            document.getElementById('divToCapture').style.backgroundColor = bgColor;
+        }
+
+        function generateImage() {
+            html2canvas(document.getElementById('divToCapture')).then(function(canvas) {
+                var dataUrl = canvas.toDataURL();
+                document.getElementById('resultImage').src = dataUrl;
+
+                var downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = dataUrl;
+                downloadLink.download = 'imagem.png';
+                downloadLink.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+</html>

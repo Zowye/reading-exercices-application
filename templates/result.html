@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Elegant and Minimalist Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Thasadith&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500&display=swap');
+
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background-image: linear-gradient(to bottom, #e9e9d3, #fad0c4);
+            /* background-color: #e9e9d3; */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Adjust the transparency as needed */
+            backdrop-filter: blur(10px);
+            /* Adjust the blur amount as needed */
+            z-index: 9999;
+            display: none;
+        }
+
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+
+
+
+
+        ::-moz-selection {
+            /* Code for Firefox */
+            color: black;
+            background: #9a9a75;
+        }
+
+        ::selection {
+            color: black;
+            background: #9a9a75;
+        }
+
+        #inner_text {
+            text-align: left;
+            font-family: 'Crimson Text', serif;
+            color: rgb(43, 43, 43) !important;
+            font-size: 30px;
+            line-height: 34px;
+        }
+
+        .container {
+            width: 60vw;
+            height: 100%;
+            padding: 20px 100px 20px 100px;
+            background-color: #edede2;
+        }
+
+
+        h1 {
+            font-size: 44px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        #WRDS_SZ {
+            margin-top: 30px;
+            font-weight: 100;
+            font-family: 'Wix Madefor Text', sans-serif !important;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>{{ info_dict.tema }}</h1>
+        <div class="timer" id="timer">00:00:00</div>
+        <button id="startButton">Start</button>
+        <p id="inner_text">
+            {{ info_dict.texto | nl2br }}
+        </p>
+        <button id="finishButton">Finish</button>
+        <div id="WRDS_SZ" style="font-weight: bold;"></div>
+        
+
+    </div>
+
+    <!-- <button onclick="openBox()">Open Box</button> -->
+
+    <div class="overlay" id="overlay">
+        <div class="box">
+            <h2>RESULTADO</h2>
+            <div class="result" id="result"></div>
+            <div class="button">
+                <button onclick="closeBox()">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        var text_recovery = document.getElementById("inner_text")
+        var SZ = text_recovery.textContent.trim().split(/\s+/).length;
+        document.getElementById("WRDS_SZ").innerHTML = `This text contains: <b>${SZ}</b> words.`;
+
+
+        var startTime;
+        var timerInterval;
+        var timerElement = document.getElementById("timer");
+        var resultElement = document.getElementById("result");
+
+        function startTimer() {
+            startTime = new Date().getTime();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            var currentTime = new Date().getTime();
+            var elapsedTime = currentTime - startTime;
+            var minutes = Math.floor(elapsedTime / 60000);
+            var seconds = Math.floor((elapsedTime % 60000) / 1000);
+            var formattedTime = padNumber(minutes) + ":" + padNumber(seconds);
+            timerElement.textContent = formattedTime;
+        }
+
+        function padNumber(number) {
+            return number.toString().padStart(2, "0");
+        }
+
+        function finishTimer() {
+            
+            clearInterval(timerInterval);
+            var minutes = Math.floor((new Date().getTime() - startTime) / 60000);
+            var seconds = Math.floor(((new Date().getTime() - startTime) % 60000) / 1000);
+
+            var TOTAL_MIN = (minutes * 60 + seconds) / 60;
+            var text_recovery = document.getElementById("inner_text")
+            var WRDS_SZ = text_recovery.textContent.trim().split(/\s+/).length;
+
+            var PPM = WRDS_SZ / TOTAL_MIN;
+            PPM = Math.round(PPM)
+
+            openBox()
+
+            resultElement.textContent = "Você alcançou uma marca de " + PPM + " PPM!";
+
+
+        }
+
+        document.getElementById("startButton").addEventListener("click", startTimer);
+        document.getElementById("finishButton").addEventListener("click", finishTimer);
+
+
+        function openBox() {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "block";
+        }
+
+        function closeBox() {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "none";
+        }
+    </script>
+</body>
+
+</html>

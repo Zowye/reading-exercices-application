@@ -1,0 +1,60 @@
+{
+    "resumo": "A Revolução Francesa foi um importante evento histórico que ocorreu na França entre 1789 e 1799. Foi um período de intensas mudanças políticas, sociais e econômicas que acabou por derrubar a monarquia absolutista e estabelecer a Primeira República Francesa. A revolução teve início devido a uma série de fatores, incluindo a crise econômica e financeira que assolava o país, a insatisfação popular com os privilégios da nobreza e do clero, além do crescente desejo de liberdade e igualdade. O estopim da revolução foi a convocação dos Estados Gerais, uma assembleia representativa formada por três estados: o clero, a nobreza e o povo comum. O terceiro estado, composto pela burguesia e pela população mais pobre, revoltou-se contra o sistema de votação desigual e proclamou-se Assembleia Nacional. Em 1789, a Bastilha, uma prisão que simbolizava o absolutismo, foi tomada pelos revolucionários, o que marcou um importante momento na revolução. Durante os anos seguintes, a França passou por diversas fases revolucionárias, incluindo a queda da monarquia, o período conhecido como o Terror, liderado por Robespierre, e a ascensão de Napoleão Bonaparte ao poder. A Revolução Francesa teve um impacto duradouro na história mundial, pois inspirou movimentos revolucionários em outros países e contribuiu para a disseminação de ideias como liberdade, igualdade e fraternidade.",
+    "perguntas": [
+        {
+            "pergunta": "Qual foi o principal fator que levou à Revolução Francesa?",
+            "alternativas": [
+                "Crise econômica e financeira",
+                "Invasão estrangeira",
+                "Disputas territoriais",
+                "Conflitos religiosos",
+                "Descontentamento com o sistema de educação"
+            ],
+            "resposta_correta": "Crise econômica e financeira"
+        },
+        {
+            "pergunta": "O que foi a Assembleia Nacional durante a Revolução Francesa?",
+            "alternativas": [
+                "Uma assembleia representativa formada por três estados",
+                "Uma prisão que simbolizava o absolutismo",
+                "Um tribunal revolucionário",
+                "Um grupo de nobres contrarrevolucionários",
+                "Uma organização de trabalhadores"
+            ],
+            "resposta_correta": "Uma assembleia representativa formada por três estados"
+        },
+        {
+            "pergunta": "Qual evento marcou um importante momento na Revolução Francesa?",
+            "alternativas": [
+                "A tomada da Bastilha",
+                "A coroação de Napoleão",
+                "A assinatura do Tratado de Versalhes",
+                "A abdicação do rei Luís XVI",
+                "A execução de Robespierre"
+            ],
+            "resposta_correta": "A tomada da Bastilha"
+        },
+        {
+            "pergunta": "Quem liderou o período conhecido como o Terror durante a Revolução Francesa?",
+            "alternativas": [
+                "Napoleão Bonaparte",
+                "Robespierre",
+                "Maria Antonieta",
+                "Luís XVI",
+                "Voltaire"
+            ],
+            "resposta_correta": "Robespierre"
+        },
+        {
+            "pergunta": "Quais ideias foram disseminadas pela Revolução Francesa?",
+            "alternativas": [
+                "Liberdade, igualdade e fraternidade",
+                "Autoritarismo e opressão",
+                "Censura e repressão",
+                "Exclusão social e desigualdade",
+                "Colonização e escravidão"
+            ],
+            "resposta_correta": "Liberdade, igualdade e fraternidade"
+        }
+    ]
+}

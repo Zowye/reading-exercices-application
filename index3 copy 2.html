@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Thasadith&display=swap');
+
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+        }
+
+        #wrapper1 {
+            /* overflow: hidden; */
+            background-image: url('bgSquare2.jpg');
+            background-size: cover;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+
+        #wrapper2 {
+            /* overflow: hidden; */
+            background-image: url('bgSquare2.jpg');
+            background-size: cover;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+
+        #mainDiv,
+        #mainDiv2 {
+            margin: 5px 0px 5px 30px;
+            display: flex;
+            flex-direction: column;
+            font-size: 100%;
+            /* 100% da fonte padrão do navegador */
+        }
+
+        #mainDiv ol,
+        #mainDiv2 ol {
+            list-style-type: none;
+            counter-reset: listCounter;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        #mainDiv ol li,
+        #mainDiv2 ol li {
+            counter-increment: listCounter;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        #mainDiv ol li::before,
+        #mainDiv2 ol li::before {
+            content: counter(listCounter);
+            font-weight: bold;
+            color: white;
+            position: absolute;
+            left: -1.9em;
+            background-color: black;
+            padding: 0 5px;
+        }
+
+
+        #mainDiv ol li::after,
+        #mainDiv2 ol li::after {
+            content: "";
+            display: block;
+            color: black;
+        }
+
+        #mainDiv ol li {
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Thasadith', sans-serif;
+        }
+
+        #mainDiv2 ol li {
+            font-size: 14px;
+            font-weight: bold;
+            font-family: 'Thasadith', sans-serif;
+        }
+
+        #wrapper_list {
+            flex-grow: 1;
+            height: 10px;
+            width: 100%;
+        }
+
+
+        #card-title {
+            margin: 0;
+            margin-bottom: 10px;
+            line-height: 60px;
+            font-size: 58px;
+            font-weight: bold;
+            font-family: 'Lobster', cursive;
+        }
+
+        .card-subtitle {
+            margin: 0;
+            margin-bottom: 16px;
+            font-size: 28px;
+            color: #7f3d1b;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        .step {
+            margin: 0;
+            margin-bottom: 16px;
+            font-size: 20px;
+            text-transform: uppercase;
+            color: #000;
+            font-family: 'Fjalla One', sans-serif;
+        }
+
+        .card-description {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+
+
+        .icon-example {
+            font-size: 24px;
+            color: #333;
+        }
+
+        #divToCapture {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="wrapper1">
+            <div id="mainDiv">
+                <h1 id="card-title">Batata Rústica</h1>
+                <h2 class="card-subtitle">IPA:</h2>
+                <!-- <p class="card-description">This is a description of the card. It gives more detail about the content of the
+                card.</p> -->
+                <h3 class="step">Ingredientes</h2>
+                    <div id="wrapper_list">
+                        <div id="list_container">
+                            <ol id="myList">
+                            </ol>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div id="wrapper2">
+            <div id="mainDiv2">
+                <div class="card-content">
+                    <!-- <p class="card-description">This is a description of the card. It gives more detail about the content of the
+                card.</p> -->
+                    <h3 class="step">Passo-a-Passo</h2>
+                        <ol id="myList2">
+                        </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    Texto superior: <input type="text" id="upperText" oninput="updateDiv()" /><br />
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="22" class="slider" id="myRange" onclick="changeFontTitle(value)">
+    </div>
+    Combina bem com cerveja: <input type="text" id="beerType" oninput="updateDiv()" /><br />
+    Ingredientes: <textarea id="ingredients" oninput="updateDiv()"></textarea><br />
+    Passos: <textarea id="steps" oninput="updateDiv()"></textarea><br />
+
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="22" class="slider" id="myRange" onclick="changeFontList1(value)">
+    </div>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="22" class="slider" id="myRange" onclick="changeFontList2(value)">
+    </div>
+
+    <!-- Cor do fundo: <input type="color" id="bgColor" oninput="updateDiv()" /><br/> -->
+
+
+    <button onclick="generateImage()">Go</button>
+
+    <img id="resultImage1" style="margin-top: 50px;" />
+    <img id="resultImage2" style="margin-top: 50px;" />
+
+    <a id="downloadLink" style="display: none;">Download da imagem</a>
+
+    <script>
+
+        function changeFontList1(value) {
+            var liElements = document.querySelectorAll('#mainDiv ol li');
+            liElements.forEach(function (li) { li.style.fontSize = `${value}px`; })
+        }
+
+        function changeFontList2(value) {
+            var liElements = document.querySelectorAll('#mainDiv2 ol li');
+            liElements.forEach(function (li) { li.style.fontSize = `${value}px`; })
+        }
+
+        function changeFontTitle(value) {
+            var card_title = document.getElementById('card-title');
+            card_title.style.fontSize = `${value}px`;
+        }
+
+
+        function addLinesToList() {
+            // Obtém o texto do campo de entrada
+            var ingredientsText = document.getElementById('ingredients').value;
+            var stepsText = document.getElementById('steps').value;
+
+            // Divide o texto por quebras de linha
+            var ingredientsTextLines = ingredientsText.split('\n');
+            var stepsTextLines = stepsText.split('\n');
+
+            // Erase the active content
+
+
+            // Obtém o elemento da lista pelo ID
+            var listElement = document.getElementById('myList');
+            var listElement2 = document.getElementById('myList2');
+
+            listElement.textContent = "";
+
+            // Itera por cada linha
+            for (var i = 0; i < ingredientsTextLines.length; i++) {
+                // Cria um novo item de lista e define o texto
+                var listItem = document.createElement('li');
+                listItem.textContent = ingredientsTextLines[i];
+                // Adiciona o item de lista à lista
+                listElement.appendChild(listItem);
+            }
+
+            // var wrapper_list_HEIGHT = document.getElementById("wrapper_list").clientHeight;
+            // var list_container_HEIGHT = document.getElementById("list_container").clientHeight;
+
+
+
+            // if (list_container_HEIGHT >= wrapper_list_HEIGHT) {
+            //     console.log("entrou", list_container_HEIGHT, wrapper_list_HEIGHT);
+            //     var liElements = document.querySelectorAll('#mainDiv ol li');
+
+            //     // Altere o valor do tamanho da fonte conforme necessário
+            //     var heightDivList = document.getElementById("list_container").clientHeight;
+            //     var l_list = ingredientsTextLines.length
+            //     var newFontSize = heightDivList / l_list;
+
+            //     console.log("heightDivList: ", heightDivList);
+            //     console.log("l_list: ", l_list);
+            //     console.log("New Size: ", newFontSize);
+            //     liElements.forEach(function (li) { li.style.fontSize = `${newFontSize}px`; })
+            // }
+
+            // Obtém o elemento da lista pelo ID
+            var listElement2 = document.getElementById('myList2');
+            listElement2.textContent = "";
+
+            // Itera por cada linha
+            for (var i = 0; i < stepsTextLines.length; i++) {
+                // Cria um novo item de lista e define o texto
+                var listItem = document.createElement('li');
+                listItem.textContent = stepsTextLines[i];
+                // Adiciona o item de lista à lista
+                listElement2.appendChild(listItem);
+            }
+
+
+        }
+
+
+        function updateDiv() {
+            var upperText = document.getElementById('upperText').value;
+            var beerType = document.getElementById('beerType').value;
+
+            var title = document.getElementById('card-title');
+            var subtitle = document.querySelector('.card-subtitle');
+            var desc = document.querySelector('.card-description');
+
+            // document.getElementById('upperDiv').innerText = upperText;
+            // document.getElementById('lowerDiv').innerText = lowerText;
+
+            title.innerText = upperText;
+
+            var complete_text = `Combina bem com ${beerType}`
+            subtitle.innerText = complete_text;
+
+            addLinesToList();
+        }
+
+
+
+        function generateImage() {
+            // Gera a imagem de mainDiv
+            html2canvas(document.getElementById('wrapper1')).then(function (canvas) {
+                var dataUrl = canvas.toDataURL();
+                document.getElementById('resultImage1').src = dataUrl;
+
+                var downloadLink = document.getElementById('downloadLink1');
+                downloadLink.href = dataUrl;
+                downloadLink.download = 'imagem1.png';
+                downloadLink.style.display = 'block';
+            });
+
+            // Gera a imagem de mainDiv2
+            html2canvas(document.getElementById('wrapper2')).then(function (canvas) {
+                var dataUrl = canvas.toDataURL();
+                document.getElementById('resultImage2').src = dataUrl;
+
+                var downloadLink = document.getElementById('downloadLink2');
+                downloadLink.href = dataUrl;
+                downloadLink.download = 'imagem2.png';
+                downloadLink.style.display = 'block';
+            });
+        }
+    </script>
+</body>
+
+</html>
