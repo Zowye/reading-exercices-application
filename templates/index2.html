@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GPT Form</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <form action="/call_gpt" method="GET">
+            <div class="form-group">
+                <h2 class="NiceTitle">Gerador de Textos</h2>
+                <h4>CONFIRA SEU DESEMPENHO!</h4>
+                <label for="word_count">Enter number of words:</label>
+                <input type="number" id="word_count" name="number" min="10" max="3000" required>
+            </div>
+            <div class="form-group">
+                <label for="theme">Enter a single word theme:</label>
+                <input type="text" id="theme" name="theme" required>
+            </div>
+            <button type="submit">Go</button>
+            <div id="spinner_wrapper">
+                <div id="spinner"></div>
+                Isto pode demorar até 1 minuto...
+            </div>
+        </form>
+    </div>
+    <script>
+        function showSpinner() {
+            console.log("running...")
+            var spinner_wrapper = document.getElementById("spinner_wrapper");
+            spinner_wrapper.style.display = "block";
+        }
+
+
+        var form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            showSpinner();
+            var number = document.getElementById('word_count').value;
+            var theme = document.getElementById('theme').value;
+            var url = '/call_gpt/' + number + '/' + theme + "/1";
+            window.location.href = url;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minimalist Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgb(233, 167, 167), transparent), linear-gradient(to top left, rgb(226, 235, 150), transparent), linear-gradient(to top right, rgb(62, 62, 182), transparent);
+            background-blend-mode: screen;
+            background-attachment: fixed;
+            opacity: 0.8;
+        }
+        
+        #content {
+            margin-top: 200px;
+        }
+        
+        #text_container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: white;
+            width: 80vw;
+            font-family: 'Lora', serif;
+            height: 120px;
+            font-size: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0px 0px 10px rgba(5, 5, 5, 0.0.3);
+        }
+        
+        #slider-container {
+            margin-bottom: 20px;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+        
+        #slider-label {
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        
+        #slider {
+            width: 200px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        label {
+            display: inline-block;
+            text-align: left;
+            font-family: 'Lora', serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #ccc;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            /* Adjust the width of the thumb */
+            height: 30px;
+            /* Adjust the height of the thumb */
+            border-radius: 50%;
+            /* Ensures a circular shape */
+            background: #993312;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            width: 33px;
+            height: 33px;
+            background: #993312;
+            cursor: pointer;
+        }
+        
+        #slider-value,
+        #char-slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            font-family: 'Lora', serif;
+            font-size: 16px;
+        }
+        
+        #slider-value {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            z-index: 9999;
+            font-size: 210px;
+            opacity: 0.4;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        #slider-value.hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+
+
+        <div id="slider-container">
+            <label for="speed-slider" id="slider-label">Speed:</label>
+            <input type="range" id="speed-slider" min="1" max="23" value="1" step="1" oninput="updateSpeedValue()" onchange="hideSliderValue()">
+
+        </div>
+        <div id="slider-container">
+            <label for="fontsize-slider" id="slider-label">Font Size:</label>
+            <input type="range" id="fontsize-slider" min="12" max="48" value="24" step="1">
+        </div>
+
+        <div id="text_container">Loading...</div>
+    </div>
+    <div id="slider-value" class="hidden"></div>
+
+    <script>
+        const sliderFontSize = document.getElementById('fontsize-slider');
+        const sliderSpeed = document.getElementById('speed-slider');
+
+        var text = ('{{ info_dict.resumo }}');
+        var words = text.split(" ");
+        var index = 0;
+        var text_imputer = document.getElementById("text_container")
+
+        // Splits text into tokens (words)
+        var list_words = text.split(" ")
+        var indexCounter = 0;
+
+        function foo() {
+            setTimeout(() => {
+                if (indexCounter < list_words.length) {
+                    text_imputer.textContent = list_words[indexCounter];
+                    indexCounter++;
+                    foo();
+                } else {
+                    indexCounter = 0;
+                    foo();
+                }
+            }, 1000 / sliderSpeed.value);
+        }
+
+        sliderFontSize.addEventListener('input', function() {
+            text_imputer.style.fontSize = `${this.value}px`;
+        });
+
+
+
+        function updateSpeedValue() {
+            var speedSlider = document.getElementById("speed-slider");
+            var sliderValue = document.getElementById("slider-value");
+            sliderValue.textContent = speedSlider.value;
+            sliderValue.classList.remove("hidden");
+            var color = getColor(speedSlider.value);
+            // Set the color of an element
+            document.getElementById("slider-value").style.color = color;
+        }
+
+        function hideSliderValue() {
+            console.log("oieeeeeeee")
+            var sliderValue = document.getElementById("slider-value");
+            sliderValue.classList.add("hidden");
+        }
+
+        function startDisplayingText() {
+            var speed = document.getElementById("speed-slider").value;
+            var fontSize = document.getElementById("fontsize-slider").value;
+            var textElement = document.getElementById("text");
+            textElement.style.fontSize = fontSize + "px";
+            textElement.textContent = "";
+
+            // ... Rest of the code
+        }
+
+        function getColor(value) {
+            const minValue = 1
+            const maxValue = 25
+                // Calculate the percentage value based on the input range
+            const percentage = (value - minValue) / (maxValue - minValue);
+
+            // Calculate the RGB values based on the percentage
+            const red = Math.round(255 * percentage);
+            const blue = Math.round(255 * (1 - percentage));
+            const green = 0;
+
+            // Generate the color in RGB format
+            const color = `rgb(${red}, ${green}, ${blue})`;
+
+            return color;
+        }
+
+        foo();
+    </script>
+</body>
+
+</html>

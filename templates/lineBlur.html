@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Texto em sequência</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap');
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(rgb(233, 167, 167), transparent), linear-gradient(to top left, rgb(226, 235, 150), transparent), linear-gradient(to top right, rgb(62, 62, 182), transparent);
+            background-blend-mode: screen;
+        }
+        
+        .container {
+            width: 800px;
+            text-align: center;
+        }
+        
+        #char_qtd_wrapper,
+        #velocity_wrapper {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: #edede2;
+            padding: 15px 40px 15px 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(5, 5, 5, 0.0.3);
+        }
+        
+        #char_qtd_wrapper label,
+        #velocity_wrapper label {
+            color: black;
+            font-weight: bold;
+        }
+        
+        #text-column {
+            position: relative;
+            height: 100%;
+            border-radius: 6px;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0px 0px 10px rgba(5, 5, 5, 0.0.3);
+            background-attachment: fixed;
+        }
+        
+        #text-column p {
+            font-size: 22px;
+            font-family: 'Lora', serif;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        #text-column p.blur {
+            filter: blur(5px);
+        }
+        
+        #slider-container {
+            margin-bottom: 30px;
+            margin-top: 20px;
+        }
+        
+        label {
+            display: inline-block;
+            text-align: left;
+            font-family: 'Lora', serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #ccc;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #993312;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #993312;
+            cursor: pointer;
+        }
+        
+        #slider-value,
+        #char-slider-value {
+            display: inline-block;
+            margin-left: 10px;
+            font-family: 'Lora', serif;
+            font-size: 16px;
+        }
+        
+        .vertical-line {
+            position: absolute;
+            left: 50%;
+            opacity: 0.2;
+            transform: translateX(-50%);
+            border-left: 5px dotted #993312;
+            height: 100%;
+            z-index: 1000;
+        }
+        
+        .vertical_aligner {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        #counter {
+            position: absolute;
+            left: 0;
+            color: black;
+            top: 0;
+            margin-left: 14px;
+            margin-top: 14px;
+            padding: 1px 10px 1px 10px;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #edede2;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div id="slider-container">
+            <div id="velocity_wrapper">
+                <div class="vertical_aligner">
+                    <label for="slider">Velocidade:</label>
+                    <span id="slider-value">1</span> grupo por segundo
+                </div>
+                <input type="range" id="slider" min="1" max="10" value="1">
+
+            </div>
+
+            <div id="char_qtd_wrapper">
+                <label for="char-slider">Tamanho da linha:</label>
+                <span id="char-slider-value">20</span> caracteres por linha
+                <input type="range" id="char-slider" min="10" max="50" value="20">
+            </div>
+        </div>
+
+
+
+        <div id="text-column">
+            <div id="counter">1</div>
+            <div class="vertical-line"></div>
+            <div id="text-wrapper">
+                <p id="text"> {{ info_dict.resumo }} </div>
+        </div>
+
+    </div>
+
+    <script>
+        const textElement = document.getElementById('text');
+        const textWrapperElement = document.getElementById('text-wrapper');
+        const sliderElement = document.getElementById('slider');
+        const sliderValueElement = document.getElementById('slider-value');
+        const charSliderElement = document.getElementById('char-slider');
+        const charSliderValueElement = document.getElementById('char-slider-value');
+        const words = textElement.textContent.trim().split(' ');
+        let currentIndex = 0;
+        let intervalId = null;
+        let groups = [];
+        var c = 1;
+        const counter = document.getElementById('counter');
+
+
+        function groupWords(words, groupSize) {
+            const groupedWords = [];
+            let currentGroup = [];
+            let currentLineLength = 0;
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                if (currentLineLength + word.length <= groupSize) {
+                    currentGroup.push(word);
+                    currentLineLength += word.length + 1;
+                } else {
+                    groupedWords.push(currentGroup);
+                    currentGroup = [word];
+                    currentLineLength = word.length + 1;
+                }
+            }
+            if (currentGroup.length > 0) {
+                groupedWords.push(currentGroup);
+            }
+            return groupedWords;
+        }
+
+        function updateText() {
+            const visibleGroup = groups[currentIndex];
+            const blurredGroups = groups.map((group, index) => {
+                if (index === currentIndex) {
+                    return `<p>${group.join(' ')}</p>`;
+                } else {
+
+                    return `<p class="blur">${group.join(' ')}</p>`;
+                }
+            }).join('');
+            textWrapperElement.innerHTML = blurredGroups;
+
+
+            setTimeout(() => {
+                textWrapperElement.innerHTML = `<p>${visibleGroup.join(' ')}</p>`;
+                console.log(currentIndex, groups.length)
+                if (currentIndex < groups.length - 1) {
+                    currentIndex++;
+                    updateText();
+                } else if (currentIndex == groups.length - 1) {
+                    currentIndex = 0;
+                    c++;
+                    counter.innerHTML = c;
+                    updateText();
+                }
+            }, 1000 / sliderElement.value);
+        }
+
+        sliderElement.addEventListener('input', function() {
+            sliderValueElement.textContent = this.value;
+        });
+
+        charSliderElement.addEventListener('input', function() {
+            charSliderValueElement.textContent = this.value;
+            groups = groupWords(words, parseInt(this.value));
+        });
+
+        charSliderValueElement.textContent = charSliderElement.value;
+        groups = groupWords(words, parseInt(charSliderElement.value));
+        updateText();
+    </script>
+</body>
+
+</html>

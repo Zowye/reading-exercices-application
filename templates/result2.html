@@ -10,33 +10,28 @@
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@600&display=swap');
-
         body {
             font-family: 'Helvetica', sans-serif;
             /* background-image: linear-gradient(to bottom, #e9e9d3, #fad0c4); */
             /* background-color: #e9e9d3; */
-
-            background:
-                linear-gradient(rgb(233, 167, 167), transparent),
-                linear-gradient(to top left, rgb(226, 235, 150), transparent),
-                linear-gradient(to top right, rgb(62, 62, 182), transparent);
-
+            background: linear-gradient(rgb(233, 167, 167), transparent), linear-gradient(to top left, rgb(226, 235, 150), transparent), linear-gradient(to top right, rgb(62, 62, 182), transparent);
             background-blend-mode: screen;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
+            background-attachment: fixed;
             /* align-items: center; */
             /* text-align: center; */
         }
-
+        
         .titles {
             font-family: 'Asap Condensed', sans-serif;
             font-weight: 300;
             font-size: 52px;
             margin-top: 30px;
         }
-
+        
         .overlay {
             position: fixed;
             top: 0;
@@ -50,7 +45,7 @@
             z-index: 9999;
             display: none;
         }
-
+        
         .box {
             position: absolute;
             top: 50%;
@@ -62,23 +57,23 @@
             border-radius: 10px;
             padding: 20px;
         }
-
+        
         .button {
             text-align: center;
             margin-top: 20px;
         }
-
-        ::-moz-selection {
+        
+         ::-moz-selection {
             /* Code for Firefox */
             color: black;
             background: #9a9a75;
         }
-
-        ::selection {
+        
+         ::selection {
             color: black;
             background: #9a9a75;
         }
-
+        
         #inner_text {
             text-align: left;
             font-family: 'Crimson Text', serif;
@@ -86,56 +81,55 @@
             font-size: 30px;
             line-height: 34px;
         }
-
+        
         .container {
             width: 60vw;
             height: 100%;
             align-items: center;
             padding: 60px 100px 100px 100px;
-            background-color: #x;
+            background-color: #fff;
         }
-
+        
         #container_questions {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             filter: blur(10px);
             /* Adjust the blur intensity as needed */
-
         }
-
+        
         #text_container {
             align-items: center;
             text-align: center;
             filter: blur(0px);
             /* Adjust the blur intensity as needed */
         }
-
+        
         .question {
             margin-bottom: 10px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
         }
-
+        
         .pergunta {
             font-family: 'Asap Condensed', sans-serif;
             font-weight: 100;
             font-size: 22px;
             margin-top: 30px;
         }
-
+        
         h1 {
             font-size: 44px;
             font-weight: 600;
             margin-bottom: 20px;
         }
-
+        
         .timer {
             font-size: 24px;
             margin-bottom: 20px;
         }
-
+        
         button,
         .button {
             background-color: #4caf50;
@@ -146,16 +140,16 @@
             font-size: 16px;
             cursor: pointer;
         }
-
+        
         button:hover {
             background-color: #45a049;
         }
-
+        
         .result {
             font-size: 20px;
             margin-top: 20px;
         }
-
+        
         #WRDS_SZ {
             margin-top: 30px;
             font-weight: 100;
@@ -194,10 +188,8 @@
                 <p class="pergunta">{{ pergunta_e_alternativas.pergunta }}</p>
                 <div class="alternatives">
                     {% for alternativa in pergunta_e_alternativas.alternativas %}
-                    <input type="radio" name="{{ pergunta_e_alternativas.index_pergunta }}" value="{{ alternativa }}"
-                        required>
-                    <label for="{{ pergunta_e_alternativas.index_pergunta }}{{ loop.index }}">{{ alternativa }}</label><br>
-                    {% endfor %}
+                    <input type="radio" name="{{ pergunta_e_alternativas.index_pergunta }}" value="{{ alternativa }}" required>
+                    <label for="{{ pergunta_e_alternativas.index_pergunta }}{{ loop.index }}">{{ alternativa }}</label><br> {% endfor %}
                 </div>
             </div>
             {% endfor %}
@@ -304,8 +296,8 @@
 
                 var correct_answer = info_dict['perguntas'][element]['resposta_correta']
 
-                if (correct_answer == selectedValue){
-                    POINTS+=1;
+                if (correct_answer == selectedValue) {
+                    POINTS += 1;
                 }
 
             });
@@ -349,10 +341,6 @@
             const text_container = document.getElementById('text_container');
             text_container.style.filter = 'blur(10px)';
         }
-
-
-
-
     </script>
 </body>
 
