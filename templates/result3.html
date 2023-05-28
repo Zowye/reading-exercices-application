@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Elegant and Minimalist Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Thasadith&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Wix+Madefor+Text:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@600&display=swap');
+        body {
+            font-family: 'Helvetica', sans-serif;
+            /* background-image: linear-gradient(to bottom, #e9e9d3, #fad0c4); */
+            /* background-color: #e9e9d3; */
+            background: linear-gradient(rgb(233, 167, 167), transparent), linear-gradient(to top left, rgb(226, 235, 150), transparent), linear-gradient(to top right, rgb(62, 62, 182), transparent);
+            background-blend-mode: screen;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            background-attachment: fixed;
+            /* align-items: center; */
+            /* text-align: center; */
+        }
+        
+        .titles {
+            font-family: 'Asap Condensed', sans-serif;
+            font-weight: 300;
+            font-size: 52px;
+            margin-top: 30px;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Adjust the transparency as needed */
+            backdrop-filter: blur(10px);
+            /* Adjust the blur amount as needed */
+            z-index: 9999;
+            display: none;
+        }
+        
+        .box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .button {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+         ::-moz-selection {
+            /* Code for Firefox */
+            color: black;
+            background: #9a9a75;
+        }
+        
+         ::selection {
+            color: black;
+            background: #9a9a75;
+        }
+        
+        #inner_text {
+            text-align: left;
+            font-family: 'Crimson Text', serif;
+            color: rgb(43, 43, 43) !important;
+            font-size: 30px;
+            line-height: 34px;
+        }
+        
+        .container {
+            width: 60vw;
+            height: 100%;
+            align-items: center;
+            padding: 60px 100px 100px 100px;
+            background-color: #fff;
+        }
+        
+        #container_questions {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            filter: blur(10px);
+            /* Adjust the blur intensity as needed */
+        }
+        
+        #text_container {
+            align-items: center;
+            text-align: center;
+            filter: blur(0px);
+            /* Adjust the blur intensity as needed */
+        }
+        
+        .question {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .pergunta {
+            font-family: 'Asap Condensed', sans-serif;
+            font-weight: 100;
+            font-size: 22px;
+            margin-top: 30px;
+        }
+        
+        h1 {
+            font-size: 44px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .timer {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        button,
+        .button {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        
+        #WRDS_SZ {
+            margin-top: 30px;
+            font-weight: 100;
+            font-family: 'Wix Madefor Text', sans-serif !important;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div id="text_container">
+            <div class="titles"> Resumo sobre o tema: {{ info_dict.tema }} </div>
+            <div class="timer" id="timer">00:00:00</div>
+            <button id="startButton">Start</button>
+            <p id="inner_text">
+                {{ info_dict.resumo | nl2br }}
+            </p>
+            <button id="finishButton">Finish</button>
+            <div id="WRDS_SZ" style="font-weight: bold;"></div>
+        </div>
+
+
+        <br>
+        <br>
+        <hr>
+
+
+        <div id="container_questions">
+
+            <div class="titles">Perguntas sobre o texto:</div>
+            {% for pergunta_e_alternativas in info_dict.perguntas %}
+            <div class="question">
+                <p class="pergunta">{{ pergunta_e_alternativas.pergunta }}</p>
+                <div class="alternatives">
+                    {% for alternativa in pergunta_e_alternativas.alternativas %}
+                    <input type="radio" name="{{ pergunta_e_alternativas.index_pergunta }}" value="{{ alternativa }}" required>
+                    <label for="{{ pergunta_e_alternativas.index_pergunta }}{{ loop.index }}">{{ alternativa }}</label><br> {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <input class="button" type="submit" value="Enviar Respostas" onclick="calculateScore({{ info_dict }})">
+        <div id="final_result"></div>
+
+    </div>
+
+
+    <div class="overlay" id="overlay">
+        <div class="box">
+            <h2>RESULTADO</h2>
+            <div class="result" id="result"></div>
+            <div class="button">
+                <button onclick="closeBox()">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        var text_recovery = document.getElementById("inner_text")
+        var SZ = text_recovery.textContent.trim().split(/\s+/).length;
+        document.getElementById("WRDS_SZ").innerHTML = `This text contains: <b>${SZ}</b> words.`;
+
+        var startTime;
+        var timerInterval;
+        var timerElement = document.getElementById("timer");
+
+
+        function startTimer() {
+            startTime = new Date().getTime();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            var currentTime = new Date().getTime();
+            var elapsedTime = currentTime - startTime;
+            var minutes = Math.floor(elapsedTime / 60000);
+            var seconds = Math.floor((elapsedTime % 60000) / 1000);
+            var formattedTime = padNumber(minutes) + ":" + padNumber(seconds);
+            timerElement.textContent = formattedTime;
+        }
+
+        function padNumber(number) {
+            return number.toString().padStart(2, "0");
+        }
+
+        function finishTimer() {
+
+            clearInterval(timerInterval);
+            var minutes = Math.floor((new Date().getTime() - startTime) / 60000);
+            var seconds = Math.floor(((new Date().getTime() - startTime) % 60000) / 1000);
+
+            var TOTAL_MIN = (minutes * 60 + seconds) / 60;
+            var text_recovery = document.getElementById("inner_text")
+            var WRDS_SZ = text_recovery.textContent.trim().split(/\s+/).length;
+
+            var PPM = WRDS_SZ / TOTAL_MIN;
+            PPM = Math.round(PPM)
+
+            openBox("Você alcançou uma marca de " + PPM + " PPM!")
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+        function calculateScore(info_dict) {
+            teste = info_dict;
+            var POINTS = 0;
+
+            // GET ALL POSSIBLE INPUT NAMES
+            var inputElements = document.getElementsByTagName('input');
+            var inputNames = [];
+            for (var i = 0; i < inputElements.length; i++) {
+                var name = inputElements[i].name;
+                if (name && !inputNames.includes(name)) {
+                    inputNames.push(name);
+                }
+            }
+
+
+            // FOR EACH QUESTION...
+            inputNames.forEach(element => {
+                var radioButtons = document.getElementsByName(`${element}`);
+
+                for (var i = 0; i < radioButtons.length; i++) {
+                    if (radioButtons[i].checked) {
+                        selectedValue = radioButtons[i].value;
+                        break;
+                    }
+                }
+
+                var correct_answer = info_dict['perguntas'][element]['resposta_correta']
+
+                if (correct_answer == selectedValue) {
+                    POINTS += 1;
+                }
+
+            });
+
+            var QT_QUESTIONS = info_dict['perguntas'].length
+
+            var message = `Total Points: ${POINTS}/${QT_QUESTIONS}`;
+
+            console.log(message);
+            openBox(message)
+
+        }
+
+
+
+
+
+
+
+
+        document.getElementById("startButton").addEventListener("click", startTimer);
+        document.getElementById("finishButton").addEventListener("click", finishTimer);
+
+
+        function openBox(message) {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "block";
+            var resultElement = document.getElementById("result");
+
+            // Displays Message
+            resultElement.textContent = message;
+        }
+
+        function closeBox() {
+            console.log("Im in here")
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "none";
+            const questions_container = document.getElementById('container_questions');
+            questions_container.style.filter = 'blur(0px)';
+
+            const text_container = document.getElementById('text_container');
+            text_container.style.filter = 'blur(10px)';
+        }
+    </script>
+</body>
+
+</html>

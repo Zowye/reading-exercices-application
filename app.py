@@ -31,6 +31,28 @@ env.filters['nl2br'] = nl2br
 
 app.secret_key = 'sua_chave_secreta'
 
+
+# Rota inicial
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
+@app.route('/get_random_text')
+def get_random_text():
+    file_path = "data.json"
+    # Abre o  no .json
+    with open(file_path, "r") as json_file:
+        data = json.load(json_file)
+
+    # Gets a random Text
+    LEN = len(data['lista_treinos'])
+    RANDOM_ID = np.random.randint(LEN)
+    data = data['lista_treinos'][RANDOM_ID]
+    return data
+
+
+
 # Rota inicial
 @app.route('/')
 def home():
@@ -58,8 +80,11 @@ def login():
         password = request.form['password']
         conn = sqlite3.connect('readingapp.db')
         cursor = conn.cursor()
+        print(username, password)
         cursor.execute('SELECT * FROM users WHERE username = ? AND password = ?', (username, password))
         user = cursor.fetchone()
+
+        print(user)
         conn.close()
         if user:
             session['username'] = user[1]

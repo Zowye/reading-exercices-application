@@ -1,0 +1,26 @@
+<!-- home.html -->
+{% extends 'base.html' %} {% block content %}
+<div>
+    <h1>Welcome to the Home Page!</h1>
+</div>
+
+<div class="container">
+    <div class="content">
+        <p class='hello'>Bem-vindo, <b>{{ user[1] }}</b>!</p>
+        <button class="button" onClick="redirectToReading(1)">Exercício 1: Leitura Cronometrada</button>
+        <button class="button" onClick="redirectToReading(2)">Exercício 2: Aumento Campo Ocular</button>
+        <button class="button" onClick="redirectToReading(3)">Exercício 3: Single Word Centralized</button>
+    </div>
+</div>
+<script>
+    function redirectToReading(ex) {
+        if (ex == 1) {
+            window.location.href = "/reading";
+        } else if (ex == 2) {
+            window.location.href = "/blurred";
+        } else {
+            window.location.href = "/centralized";
+        }
+    }
+</script>
+{% endblock %}

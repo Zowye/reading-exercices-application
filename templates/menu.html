@@ -1,0 +1,24 @@
+<!-- menu.html -->
+
+
+
+<nav id="menu">
+    <div id="menu-content">
+        <div id="logo">
+            <a href="/profile">
+                CURSO <b>LEITURA</b>
+            </a>
+        </div>
+        <!-- <a class="menu-item" href="#">HOME</a> -->
+        <div id="right_content">
+            <div id="itens">
+                <ul>
+                    <li><i class="fas fa-info-circle"></i><a href="#"> Sobre</a></li>
+                    <li><i class="fas fa-chart-bar"></i><a href="#"> Estatísticas</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="#"> Contato</a></li>
+                </ul>
+            </div>
+            <a class="special_button logout-button" href="{{ url_for('logout') }}">LOGOUT</a>
+        </div>
+    </div>
+</nav>

@@ -1,179 +1,25 @@
-<!DOCTYPE html>
-<html>
+<!-- home.html -->
+{% extends 'base.html' %} {% block content %}
+<div>
+    <h1>
+        <p class='hello'>Bem-vindo, <b>{{ user[1] }}</b>!</p>
+    </h1>
+</div>
 
-<head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Asap+Condensed:wght@600&display=swap');
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Helvetica', sans-serif;
-            background: linear-gradient(rgb(233, 167, 167), transparent), linear-gradient(to top left, rgb(226, 235, 150), transparent), linear-gradient(to top right, rgb(62, 62, 182), transparent);
-            background-blend-mode: screen;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
+<div id="container">
+    <button class="button" onClick="redirectToReading(1)">Exercício 1: Leitura Cronometrada</button>
+    <button class="button" onClick="redirectToReading(2)">Exercício 2: Aumento Campo Ocular</button>
+    <button class="button" onClick="redirectToReading(3)">Exercício 3: Single Word Centralized</button>
+</div>
+<script>
+    function redirectToReading(ex) {
+        if (ex == 1) {
+            window.location.href = "/reading";
+        } else if (ex == 2) {
+            window.location.href = "/blurred";
+        } else {
+            window.location.href = "/centralized";
         }
-        
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        
-        .content {
-            display: flex;
-            flex-direction: column;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 400px;
-            max-width: 100%;
-        }
-        
-        .button {
-            display: block;
-            width: 100%;
-            height: 40px;
-            margin-bottom: 10px;
-            background-color: #4caf50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        
-        .button:hover {
-            background-color: #3c883f;
-        }
-        
-        #menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 90px;
-            background-color: #f1f1f1;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        #menu-content {
-            width: 75%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        #messages_container {
-            width: 75%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .menu-item {
-            padding: 10px;
-            font-weight: bold;
-            text-decoration: none;
-            color: #333;
-        }
-        /* Media Queries */
-        
-        @media (max-width: 600px) {
-            .content {
-                padding: 10px;
-            }
-        }
-        
-        .special_button {
-            padding: 10px;
-            background-color: #4caf50;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            margin-bottom: 2px;
-            border-radius: 5px;
-        }
-        
-        .special_button:hover {
-            background-color: #378839;
-        }
-        
-        h1 {
-            font-family: 'Asap Condensed', sans-serif;
-        }
-        
-        a {
-            color: black;
-            text-decoration: none;
-        }
-        
-        a:visited {
-            color: black;
-        }
-        
-        .hello {
-            font-size: 23px;
-        }
-        
-        #logo {
-            padding: 2px 10px 2px 10px;
-            display: inline-block;
-            min-height: 10px;
-            min-width: 10px;
-            font-family: 'Asap Condensed', sans-serif;
-            font-size: 40px;
-            border-radius: 5px;
-            background-color: #dddddd;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div id="menu">
-        <div id="menu-content">
-            <div id="logo">
-                <a href="#">
-                    CURSO <b>LEITURA</b>
-                </a>
-            </div>
-            <!-- <a class="menu-item" href="#">HOME</a> -->
-            <a class="special_button" href="{{ url_for('logout') }}">Logout</a>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="content">
-            <p class='hello'>Bem-vindo, <b>{{ user[1] }}</b>!</p>
-            <button class="button" onClick="redirectToReading(1)">Exercício 1: Leitura Cronometrada</button>
-            <button class="button" onClick="redirectToReading(2)">Exercício 2: Aumento Campo Ocular</button>
-            <button class="button" onClick="redirectToReading(3)">Exercício 3: Single Word Centralized</button>
-        </div>
-    </div>
-    <script>
-        function redirectToReading(ex) {
-            if (ex == 1) {
-                window.location.href = "/reading";
-            } else if (ex == 2) {
-                window.location.href = "/blurred";
-            } else {
-                window.location.href = "/centralized";
-            }
-        }
-    </script>
-</body>
-
-</html>
+    }
+</script>
+{% endblock %}
