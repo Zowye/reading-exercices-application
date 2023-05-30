@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f3f3f3;
+            font-family: Arial, sans-serif;
+        }
+        
+        .slider-container {
+            position: fixed;
+            top: 1em;
+            left: 1em;
+        }
+        
+        .slider-container input {
+            width: 100px;
+        }
+        
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content div {
+            margin: 0 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slider-container">
+        <div>
+            Interval (seconds):
+            <input id="intervalSlider" type="range" min="1" max="10" value="5">
+        </div>
+        <div>
+            Spacing (em):
+            <input id="spacingSlider" type="range" min="1" max="10" value="1" step="0.1">
+        </div>
+        <div>
+            Font Size (em):
+            <input id="fontSlider" type="range" min="1" max="5" value="1" step="0.1">
+        </div>
+    </div>
+    <div class="content">
+        <div id="word1"></div>
+        <div id="word2"></div>
+    </div>
+
+    <script>
+        var jsArray = `{{ info_dict | tojson | safe }}`;
+        var index = 0;
+
+        function updateWords() {
+            document.getElementById("word1").textContent = jsArray[index][0];
+            document.getElementById("word2").textContent = jsArray[index][1];
+            index = (index + 1) % jsArray.length;
+        }
+
+        var interval = setInterval(updateWords, document.getElementById("intervalSlider").value * 1000);
+        updateWords();
+
+        document.getElementById("intervalSlider").addEventListener("input", function(e) {
+            clearInterval(interval);
+            interval = setInterval(updateWords, e.target.value * 1000);
+        });
+
+        document.getElementById("spacingSlider").addEventListener("input", function(e) {
+            document.querySelector(".content").style.margin = `0 ${e.target.value}em`;
+        });
+
+        document.getElementById("fontSlider").addEventListener("input", function(e) {
+            document.querySelector(".content").style.fontSize = `${e.target.value}em`;
+        });
+    </script>
+</body>
+
+</html>

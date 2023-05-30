@@ -7,9 +7,9 @@ from markupsafe import Markup
 from jinja2 import Environment
 from datetime import datetime
 import numpy as np
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import sqlite3
-
+from visual_perimeter_increaser import LISTA
 
 
 app = Flask(__name__)
@@ -186,6 +186,10 @@ def display_page():
     return render_template("centralized.html", info_dict=data)
 
 
+@app.route('/visual_perimeter_increaser')
+def visual_perimeter_increaser():
+    data = LISTA
+    return render_template("visual_perimeter_increaser.html", info_dict=data)
 
 @app.route('/reading')
 def index():
